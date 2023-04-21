@@ -3,7 +3,7 @@
         <div class="flex mt-4 p-2">
             <img class="mr-3 h-32" :src="product.imageURL" :alt="`${product.name} image`">
             <div>
-                <h1 class="font-bold">{{ product.name }}</h1>
+                <h1 class="font-bold" :class="{'text-blue-500' : isInWatchlist}">{{ product.name }}</h1>
                 <p><span class="font-bold">Price:</span> {{ product.price.value }} {{ product.price.currency }}</p>
                 <div class="flex justify-between">
                     <div class="stars-outer">

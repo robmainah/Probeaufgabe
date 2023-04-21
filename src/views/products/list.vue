@@ -14,7 +14,7 @@
     </div>
 
     <div>
-        <div v-for="product in products" :key="product.id" class="flex mt-4 p-2 border border-gray-400">
+        <div v-for="product in products" :key="product.id" class="flex mt-4 p-2 border border-gray-400" :style="{ backgroundColor: isInWatchlist(product.id) ? '#D1C4E9' : '' }">
             <img class="mr-3 h-28" :class="{'order-last ml-3' : !product.available }" :src="product.imageURL" :alt="`${product.name} image`">
             <div class="w-100">
                 <div class="flex">
@@ -46,6 +46,7 @@
     let products = ref([]);
     let watchlist = ref([]);
 
+
     const getAllProducts = () => {
         products.value = store.state.products
     }
@@ -69,11 +70,15 @@
     };
 
     const showWatchlistProducts = () => {
-        watchlist.value = store.state.watchlist.map(Number);
         products.value = store.state.products.filter(product => watchlist.value.includes(product.id));
     };
 
+    const isInWatchlist = (productId) => {
+        return watchlist.value.includes(productId);
+    }
+
     onMounted(() => {
+        watchlist.value = store.state.watchlist.map(Number);
         getAllProducts();
     });
 </script>
