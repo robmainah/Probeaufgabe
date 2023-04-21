@@ -2,13 +2,13 @@
     <div>
         <ul class="font-medium flex px-4 md:space-x-8 bg-gray-800">
             <li>
-                <a href="#" class="block py-2 pl-3 pr-4 text-white" >All</a>
+                <a href="#" class="block py-2 pl-3 pr-4 text-white" @click="getAllProducts">All</a>
             </li>
             <li>
-                <a href="#" class="block py-2 pl-3 pr-4 text-white" >Available</a>
+                <a href="#" class="block py-2 pl-3 pr-4 text-white" @click="showAvailableProducts">Available</a>
             </li>
             <li>
-                <a href="#" class="block py-2 pl-3 pr-4 text-white" >Watchlist</a>
+                <a href="#" class="block py-2 pl-3 pr-4 text-white" @click="showWatchlistProducts">Watchlist</a>
             </li>
         </ul>
     </div>
@@ -44,8 +44,9 @@
 
     const store = useStore();
     let products = ref([]);
+    let watchlist = ref([]);
 
-    const getItems = () => {
+    const getAllProducts = () => {
         products.value = store.state.products
     }
 
@@ -63,8 +64,17 @@
         return `${(Math.round(starPercentage / 10) * 10)}%`;
     }
 
+    const showAvailableProducts = () => {
+        products.value = store.state.products.filter(product => product.available);
+    };
+
+    const showWatchlistProducts = () => {
+        watchlist.value = store.state.watchlist.map(Number);
+        products.value = store.state.products.filter(product => watchlist.value.includes(product.id));
+    };
+
     onMounted(() => {
-        getItems();
+        getAllProducts();
     });
 </script>
 

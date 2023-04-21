@@ -33,7 +33,6 @@ export default createStore({
                 state.watchlist.push(productId)
             } else {
                 state.watchlist.splice(index, 1)
-                console.log(state.watchlist);
             }
 
             localStorage.setItem('watchlist', JSON.stringify(state.watchlist))
