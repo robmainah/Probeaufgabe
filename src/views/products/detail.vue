@@ -1,14 +1,16 @@
 <template>
     <div>
-        <div class="flex mt-4 p-2 border border-gray-400">
+        <div class="flex mt-4 p-2">
             <img class="mr-3 h-32" :src="product.imageURL" :alt="`${product.name} image`">
-            <div class="w-100">
+            <div>
                 <h1 class="font-bold">{{ product.name }}</h1>
                 <p><span class="font-bold">Price:</span> {{ product.price.value }} {{ product.price.currency }}</p>
-                <p class="flex justify-between">
-                    <span>{{ product.rating }}</span>
-                    <span class="text-small">{{ formDate(product.releaseDate) }}</span>
-                </p>
+                <div class="flex justify-between">
+                    <div class="stars-outer">
+                        <div class="stars-inner" :style="{ 'width': fillStar(product.rating) }"></div>
+                    </div>
+                    <span class="text-gray-600 date ml-5">{{ formDate(product.releaseDate) }}</span>
+                </div>
             </div>
         </div>
         
@@ -35,8 +37,22 @@
 
     const watchlist = store.state.watchlist
     
+    const fillStar = (rating) => {
+        const starTotal = 5;
+        const starPercentage = (rating / starTotal) * 100;
+        return `${(Math.round(starPercentage / 10) * 10)}%`;
+    }
+
+    const toggleWatchlist = () => {
+        store.commit('updateWatchList', route.params.id);
+    }
+
+    const formDate = (milliseconds) => {
+        return moment(milliseconds).format('DD.MM.YYYY')
+    }
+
     let product = computed(() => {
-        return store.state.products.find(product => product.id == route.params.id)
+        return store.state.products.find(product => product.id == route.params.id);
     });
 
     const isInWatchlist = computed(() => {
@@ -47,13 +63,6 @@
         }
 
         return false;
-    })
-
-    const toggleWatchlist = () => {
-        store.commit('updateWatchList', route.params.id);
-    }
-
-    const formDate = (milliseconds) => {
-        return moment(milliseconds).format('DD.MM.YYYY')
-    }
+    });
 </script>
+

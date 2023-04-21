@@ -17,10 +17,20 @@
         <div v-for="product in products" :key="product.id" class="flex mt-4 p-2 border border-gray-400">
             <img class="mr-3 h-28" :class="{'order-last ml-3' : !product.available }" :src="product.imageURL" :alt="`${product.name} image`">
             <div class="w-100">
-                <h1><router-link :to="{ name: 'ProductDetail', params: {id: product.id}}" class="font-bold">{{ product.name }}</router-link></h1>
+                <div class="flex">
+                    <h1>
+                        <router-link :to="{ name: 'ProductDetail', params: {id: product.id}}" class="font-bold">{{ product.name }}</router-link>
+                    </h1>
+
+                    <span class="date ml-5 text-gray-600">{{ formDate(product.releaseDate) }}</span>
+                </div>
                 <p>{{ shortenStringLength(product.description) }}</p>
-                <p>rating {{ product.rating }}</p>
-                <p><span class="font-bold">Price:</span> {{ product.price.value }} {{ product.price.currency }}</p>
+                <div class="flex justify-between">
+                    <p v-if="product.available" class="mr-4"><span class="font-bold">Price:</span> {{ product.price.value }} {{ product.price.currency }}</p>
+                    <div class="stars-outer">
+                        <div class="stars-inner" :style="{ 'width': fillStar(product.rating) }"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -29,6 +39,8 @@
 <script setup>
     import { useStore } from "vuex";
     import { ref, onMounted } from "vue";
+    
+    import moment from 'moment';
 
     const store = useStore();
     let products = ref([]);
@@ -40,8 +52,19 @@
     const shortenStringLength = (string) => {
         return string.substring(0, 50)
     }
+    
+    const formDate = (milliseconds) => {
+        return moment(milliseconds).format('DD.MM.YYYY')
+    }
+    
+    const fillStar = (rating) => {
+        const starTotal = 5;
+        const starPercentage = (rating / starTotal) * 100;
+        return `${(Math.round(starPercentage / 10) * 10)}%`;
+    }
 
     onMounted(() => {
         getItems();
     });
 </script>
+
