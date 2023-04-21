@@ -17,7 +17,7 @@
         <div v-for="product in products" :key="product.id" class="flex mt-4 p-2 border border-gray-400">
             <img class="mr-3 h-28" :class="{'order-last ml-3' : !product.available }" :src="product.imageURL" :alt="`${product.name} image`">
             <div class="w-100">
-                <router-link :to="{ name: 'ProductDetail', params: {id: product.id}}" class="font-bold">{{ product.name }}</router-link>
+                <h1><router-link :to="{ name: 'ProductDetail', params: {id: product.id}}" class="font-bold">{{ product.name }}</router-link></h1>
                 <p>{{ shortenStringLength(product.description) }}</p>
                 <p>rating {{ product.rating }}</p>
                 <p><span class="font-bold">Price:</span> {{ product.price.value }} {{ product.price.currency }}</p>

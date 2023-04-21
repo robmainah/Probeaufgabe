@@ -3,9 +3,12 @@
         <div class="flex mt-4 p-2 border border-gray-400">
             <img class="mr-3 h-32" :src="product.imageURL" :alt="`${product.name} image`">
             <div class="w-100">
-                <p class="font-bold">{{ product.name }}</p>
-                <p>rating {{ product.rating }}</p>
+                <h1 class="font-bold">{{ product.name }}</h1>
                 <p><span class="font-bold">Price:</span> {{ product.price.value }} {{ product.price.currency }}</p>
+                <p class="flex justify-between">
+                    <span>{{ product.rating }}</span>
+                    <span class="text-small">{{ formDate(product.releaseDate) }}</span>
+                </p>
             </div>
         </div>
         
@@ -16,6 +19,7 @@
             <span v-else>Remember</span>
         </button>
         
+        <h2 class="font-bold">Description</h2>
         <p>{{ product.longDescription }}</p>
     </div>
 </template>
@@ -24,6 +28,7 @@
     import { useStore } from "vuex";
     import { useRoute } from 'vue-router';
     import { computed, ref } from "vue";
+    import moment from 'moment';
 
     const store = useStore();
     const route = useRoute();
@@ -46,5 +51,9 @@
 
     const toggleWatchlist = () => {
         store.commit('updateWatchList', route.params.id);
+    }
+
+    const formDate = (milliseconds) => {
+        return moment(milliseconds).format('DD.MM.YYYY')
     }
 </script>
